@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Fusion · 字体校样</title>
+  <style>
+    @font-face { font-family: FusionSC; src: url('./output/LocalFusionSC-Regular.otf') format('opentype'); }
+    @font-face { font-family: FusionTC; src: url('./output/LocalFusionTC-Regular.otf') format('opentype'); }
+    @font-face { font-family: FusionJ; src: url('./output/LocalFusionJ-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowSC; src: url('./GlowSansSC-Normal-v0.93/GlowSansSC-Normal-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowTC; src: url('./GlowSansTC-Normal-v0.93/GlowSansTC-Normal-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowJ; src: url('./GlowSansJ-Normal-v0.93/GlowSansJ-Normal-Regular.otf') format('opentype'); }
+    @font-face { font-family: Ubuntu; src: url('./ubuntu-font-family-0.83/Ubuntu-R.ttf') format('truetype'); }
+    @font-face { font-family: FusionSCMedium; src: url('./output/LocalFusionSCMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: FusionTCMedium; src: url('./output/LocalFusionTCMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: FusionJMedium; src: url('./output/LocalFusionJMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowSCMedium; src: url('./GlowSansSC-Normal-v0.93/GlowSansSC-Normal-Medium.otf') format('opentype'); }
+    @font-face { font-family: GlowTCMedium; src: url('./GlowSansTC-Normal-v0.93/GlowSansTC-Normal-Medium.otf') format('opentype'); }
+    @font-face { font-family: GlowJMedium; src: url('./GlowSansJ-Normal-v0.93/GlowSansJ-Normal-Medium.otf') format('opentype'); }
+    :root { color-scheme: light; --ink: #202522; --muted: #646c66; --line: #d4dbd5; --green: #225e43; --size: 28px; --leading: 1.8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: #f5f7f4; font-family: Ubuntu, GlowSC, sans-serif; letter-spacing: 0; }
+    header { border-top: 5px solid var(--green); border-bottom: 1px solid var(--line); background: #fff; }
+    .wrap { max-width: 1440px; margin: auto; padding: 28px 36px; }
+    .masthead { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    h1 { font-size: 28px; font-weight: 400; margin: 0; }
+    .sub { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .badge { font-size: 12px; color: var(--green); border-left: 2px solid var(--green); padding-left: 12px; white-space: nowrap; }
+    .controls { display: flex; flex-wrap: wrap; align-items: end; gap: 20px 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+    label, legend { font-size: 13px; color: var(--muted); }
+    fieldset { border: 0; padding: 0; margin: 0; }
+    legend { margin-bottom: 8px; }
+    .segments { display: flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: white; }
+    .segments label { position: relative; padding: 9px 16px; cursor: pointer; color: var(--ink); }
+    .segments label:has(input:checked) { background: var(--green); color: #fff; }
+    .segments label:has(input:focus-visible) { outline: 2px solid #d78b26; outline-offset: -3px; }
+    .segments input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .setting { display: grid; gap: 8px; min-width: 150px; }
+    .setting > span { display: flex; justify-content: space-between; gap: 16px; }
+    output { color: var(--ink); font-variant-numeric: tabular-nums; }
+    input[type=range] { accent-color: var(--green); width: 100%; margin: 8px 0; }
+    select { font: inherit; color: var(--ink); background: white; padding: 8px; border: 1px solid var(--line); border-radius: 4px; max-width: 100%; }
+    .edit-label { display: block; margin: 24px 0 10px; }
+    textarea { display: block; width: 100%; height: 146px; resize: vertical; font: 16px/1.7 Ubuntu, GlowSC, sans-serif; background: white; color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 14px 18px; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+    .comparison { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: 30px; border-bottom: 1px solid var(--line); }
+    .specimen { min-width: 0; }
+    .specimen:first-child { border-right: 1px solid var(--line); padding-right: 28px; }
+    .specimen:last-child { padding-left: 28px; }
+    .specimen-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+    h2 { font-size: 16px; font-weight: 400; margin: 0; }
+    .status { font-size: 12px; color: var(--muted); }
+    .status[data-state=ready] { color: var(--green); }
+    .status[data-state=error] { color: #a33530; }
+    .sample { font-size: var(--size); line-height: var(--leading); font-weight: 400; font-synthesis: none; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 300px; padding: 24px 0 32px; margin: 0; }
+    .vertical .sample { writing-mode: vertical-rl; height: 460px; min-height: 0; overflow: auto; width: 100%; padding: 20px 0; }
+    .latin { padding: 24px 0; border-bottom: 1px solid var(--line); }
+    .latin .sample { min-height: 0; padding-bottom: 0; }
+    footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 12px; padding-top: 20px; }
+    @media (max-width: 720px) {
+      .wrap { padding: 22px 18px; }
+      .masthead { align-items: start; }
+      h1 { font-size: 24px; }
+      .badge { white-space: normal; max-width: 90px; }
+      .controls { gap: 20px; }
+      .setting { flex: 1; min-width: 130px; }
+      .comparison { grid-template-columns: minmax(0, 1fr); }
+      .specimen:first-child { border-right: 0; border-bottom: 1px solid var(--line); padding-right: 0; }
+      .specimen:last-child { padding: 24px 0 0; }
+      .sample { min-height: 180px; }
+    }
+  </style>
+</head>
+<body>
+  <header><div class="wrap masthead"><div><h1>Local Fusion <span lang="zh-CN">字体校样</span></h1><div class="sub">GLOW SANS NORMAL × UBUNTU / REGULAR</div></div><div class="badge">本地字体<br>PRIVATE BUILD</div></div></header>
+  <main class="wrap">
+    <div class="controls">
+      <fieldset><legend>地区字形</legend><div class="segments">
+        <label><input type="radio" name="region" value="SC" checked>简体 SC</label>
+        <label><input type="radio" name="region" value="TC">繁体 TC</label>
+        <label><input type="radio" name="region" value="J">日本 J</label>
+      </div></fieldset>
+      <label class="setting"><span>Glow Sans 字重</span><select id="weight"><option value="Regular">Regular + Ubuntu Regular</option><option value="Medium" selected>Medium + Ubuntu Regular</option></select></label>
+      <label class="setting"><span>字号 <output id="size-value">28 px</output></span><input id="size" type="range" min="12" max="80" value="28"></label>
+      <label class="setting"><span>行高 <output id="leading-value">1.8</output></span><input id="leading" type="range" min="1" max="2.6" step="0.1" value="1.8"></label>
+      <label class="setting"><span>排版方向</span><select id="direction"><option value="horizontal">横排</option><option value="vertical">竖排</option></select></label>
+      <label class="setting"><span>文字样本</span><select id="preset"><option value="SC">简体混排</option><option value="TC">繁体混排</option><option value="J">日本語混排</option><option value="punctuation">标点与重音</option><option value="custom" disabled>自定义</option></select></label>
+    </div>
+    <label class="edit-label" for="text">校样文字</label><textarea id="text" spellcheck="false"></textarea>
+    <div class="comparison" id="comparison">
+      <section class="specimen"><div class="specimen-head"><h2 id="fusion-title">Local Fusion SC</h2><span class="status" id="fusion-status" role="status">加载中</span></div><p class="sample" id="fusion"></p></section>
+      <section class="specimen"><div class="specimen-head"><h2 id="glow-title">Glow Sans SC · 原版</h2><span class="status" id="glow-status" role="status">加载中</span></div><p class="sample" id="glow"></p></section>
+    </div>
+    <section class="latin"><div class="specimen-head"><h2>Ubuntu Regular · 原版拉丁文</h2><span class="status" id="ubuntu-status" role="status">加载中</span></div><p class="sample" style="font-family: Ubuntu, monospace" lang="en">ABCDEFGHIJKLMNOPQRSTUVWXYZ
+abcdefghijklmnopqrstuvwxyz 0123456789
+AVATAR To Wa fi ffi — Café naïve Ångström
+"Hello, world!" 'Regular' - + = / : ; ( ) [ ] { }</p></section>
+    <footer><span>Regular 400 / CFF OpenType</span><span id="filename">output/LocalFusionSC-Regular.otf</span></footer>
+  </main>
+  <script>
+    const samples = {
+      SC: '春风又绿江南岸，明月何时照我还。\n在城市与山野之间，记录日常的细微变化。\nHello, 世界！Ubuntu 与 Glow Sans 的相遇。\nVersion 1.0 / 2026-10-23 / Regular 400',
+      TC: '春風又綠江南岸，明月何時照我還。\n在城市與山野之間，記錄日常的細微變化。\nHello, 世界！Ubuntu 與 Glow Sans 的相遇。\nVersion 1.0 / 2026-10-23 / Regular 400',
+      J: '春の風、静かな街、新しい一日。\n都市と自然のあいだで、日々の小さな変化を記録する。\nこんにちは、世界！Hello, world!\nVersion 1.0 / 2026-10-23 / Regular 400',
+      punctuation: '“中文引号” ‘弯单引号’ 「直角引號」『二重鉤括弧』\n"Ubuntu quotes" \'single quotes\' - hyphen\n中文：，。！？；：（）【】《》……——\nASCII: , . ! ? ; : ( ) [ ] < > ... --\nCafé naïve Ångström Straße Łódź / Cafe\u0301 A\u0308\n0123456789 / AVATAR To Wa fi ffi'
+    };
+    const byId = id => document.getElementById(id);
+    let generation = 0;
+    function updateText() {
+      byId('fusion').textContent = byId('text').value;
+      byId('glow').textContent = byId('text').value;
+    }
+    async function checkFont(family, statusId, token) {
+      const status = byId(statusId);
+      status.textContent = '加载中';
+      status.dataset.state = 'loading';
+      try {
+        const faces = await document.fonts.load(`28px "${family}"`);
+        if (!faces.length) throw new Error('Missing font face');
+        if (token !== generation) return;
+        status.textContent = '已加载';
+        status.dataset.state = 'ready';
+      } catch {
+        if (token !== generation) return;
+        status.textContent = '加载失败 · 检查本地字体文件';
+        status.dataset.state = 'error';
+      }
+    }
+    function updateRegion() {
+      const region = document.querySelector('[name=region]:checked').value;
+      const weight = byId('weight').value;
+      const suffix = weight === 'Regular' ? '' : 'Medium';
+      const variant = weight === 'Regular' ? '' : 'MediumCJK';
+      const language = { SC: 'zh-CN', TC: 'zh-TW', J: 'ja' }[region];
+      generation += 1;
+      for (const [id, family] of [['fusion', 'Fusion'], ['glow', 'Glow']]) {
+        byId(id).style.fontFamily = `"${family}${region}${suffix}", sans-serif`;
+        byId(id).lang = language;
+        checkFont(`${family}${region}${suffix}`, `${id}-status`, generation);
+      }
+      checkFont('Ubuntu', 'ubuntu-status', generation);
+      byId('fusion-title').textContent = `Local Fusion ${region} · Glow ${weight}`;
+      byId('glow-title').textContent = `Glow Sans ${region} ${weight} · 原版`;
+      byId('filename').textContent = `output/LocalFusion${region}${variant}-Regular.otf`;
+    }
+    document.querySelectorAll('[name=region]').forEach(input => input.addEventListener('change', updateRegion));
+    byId('weight').addEventListener('change', updateRegion);
+    byId('text').addEventListener('input', () => { byId('preset').value = 'custom'; updateText(); });
+    byId('preset').addEventListener('change', () => { byId('text').value = samples[byId('preset').value]; updateText(); });
+    for (const [id, property, unit] of [['size', '--size', 'px'], ['leading', '--leading', '']]) {
+      byId(id).addEventListener('input', () => {
+        document.documentElement.style.setProperty(property, byId(id).value + unit);
+        byId(`${id}-value`).textContent = byId(id).value + (unit ? ` ${unit}` : '');
+      });
+    }
+    byId('direction').addEventListener('change', () => byId('comparison').classList.toggle('vertical', byId('direction').value === 'vertical'));
+    byId('text').value = samples.SC;
+    updateText();
+    updateRegion();
+  </script>
+</body>
+</html>
