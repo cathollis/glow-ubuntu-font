@@ -104,8 +104,8 @@ def build(region, sources, output, glow_weight='Regular'):
         names = merged['name']
         names.names = []
         for name_id, value in {
-            1: family, 2: 'Regular', 3: f'{postscript};1.000',
-            4: f'{family} Regular', 5: 'Version 1.000', 6: postscript,
+            1: family, 2: 'Regular', 3: f'{postscript};1.001',
+            4: postscript, 5: 'Version 1.001', 6: postscript,
             16: family, 17: 'Regular',
             0: 'Glow Sans: Copyright (c) 2020 Celestial Phineas. Ubuntu: see source copyright.txt.',
             13: 'Private local build combining OFL-1.1 and Ubuntu Font Licence inputs. Not licensed for redistribution.',
@@ -114,7 +114,7 @@ def build(region, sources, output, glow_weight='Regular'):
         top = merged['CFF '].cff[0]
         merged['CFF '].cff.fontNames = [postscript]
         top.FamilyName = family
-        top.FullName = f'{family} Regular'
+        top.FullName = postscript
         top.Weight = 'Regular'
         for tag in ('hhea', 'OS/2'):
             original = fonts[base_region][tag]

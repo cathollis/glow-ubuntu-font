@@ -49,9 +49,11 @@ def verify(region, glow_weight='Regular'):
         assert result['OS/2'].usWeightClass == 400
         family = f'Glow Ubuntu {region}' + (' MediumCJK' if variant else '')
         assert result['name'].getDebugName(1) == family
+        assert result['name'].getDebugName(4) == destination.stem
         assert result['name'].getDebugName(6) == destination.stem
         assert result['CFF '].cff.fontNames == [destination.stem]
         assert result['CFF '].cff[0].FamilyName == family
+        assert result['CFF '].cff[0].FullName == destination.stem
         expected_codes = set().union(*(set(mapping) for key, mapping in maps.items() if key != 'Ubuntu'))
         expected_codes.update(codepoint for codepoint in maps['Ubuntu'] if ubuntu_character(codepoint))
         assert set(result.getBestCmap()) == expected_codes, (region, 'coverage')

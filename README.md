@@ -43,6 +43,21 @@ Ubuntu overrides the same character sets in all four outputs. Shared characters
 keep SC glyphs; the merged output does not add automatic regional variants.
 Use `python build.py --region Merged` to build only this combined font.
 
+## Windows Installation
+
+The OpenType full name (name ID 4), PostScript name (name ID 6), and CFF
+FullName use the same identifier, such as `GlowUbuntuMerged-Regular`. Family
+names remain readable, such as `Glow Ubuntu Merged`. This keeps the Windows
+installation registry name consistent with GDI enumeration, which Qt's
+FreeType backend uses to locate installed font files. Telegram uses this
+backend when its FreeType or High DPI downscale experimental option is enabled.
+
+When replacing builds older than version 1.001, uninstall the old font in
+Windows Settings before installing the rebuilt file for all users. The old
+registration uses a different full name, so simply overwriting the font file
+may retain an incompatible registry entry. Fully exit and restart Telegram
+after reinstalling; if Windows keeps the old font loaded, restart Windows.
+
 ## Local Preview
 
 For slightly heavier CJK glyphs while keeping Ubuntu Regular unchanged:
