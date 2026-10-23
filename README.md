@@ -1,6 +1,6 @@
-# Local Fusion Fonts
+# Glow Ubuntu Fonts
 
-Build three private Regular CFF OpenType fonts from Glow Sans Normal v0.93
+Build four private Regular CFF OpenType fonts from Glow Sans Normal v0.93
 and Ubuntu 0.83. Only the scripts and documentation are intended for publication.
 Source fonts and generated fonts are excluded by `.gitignore`.
 
@@ -33,11 +33,15 @@ python build.py
 python verify.py
 ```
 
-Outputs are `output/LocalFusionSC-Regular.otf`, `LocalFusionTC-Regular.otf`,
-and `LocalFusionJ-Regular.otf`, plus `output/build-report.json`.
+Outputs are `output/GlowUbuntuSC-Regular.otf`, `GlowUbuntuTC-Regular.otf`,
+`GlowUbuntuJ-Regular.otf`, and `GlowUbuntuMerged-Regular.otf`, plus `output/build-report.json`.
 Use `python build.py --region SC` to build just SC. `--source-dir` and
 `--output-dir` accept alternative directories. The verification command checks
-all three outputs in the default output directory.
+all four outputs in the default output directory. The Merged output keeps SC
+glyphs and adds characters missing from SC, first from TC and then from J.
+Ubuntu overrides the same character sets in all four outputs. Shared characters
+keep SC glyphs; the merged output does not add automatic regional variants.
+Use `python build.py --region Merged` to build only this combined font.
 
 ## Local Preview
 
@@ -49,7 +53,7 @@ python verify.py --glow-weight Medium
 ```
 
 This uses Glow Sans Normal Medium for both regional glyphs and SC fallback.
-Outputs are `output/LocalFusion{SC,TC,J}MediumCJK-Regular.otf` with separate
+Outputs are `output/GlowUbuntu{SC,TC,J,Merged}MediumCJK-Regular.otf` with separate
 family names, so they can coexist with the original builds. The font style
 remains Regular (400) for normal text; only the Glow source weight changes.
 The preview defaults to this variant and offers a Regular/Medium selector.

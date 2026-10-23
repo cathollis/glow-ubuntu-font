@@ -61,15 +61,19 @@ def build(region, sources, output, glow_weight='Regular'):
     fonts = {key: TTFont(path) for key, path in sources.items()}
     maps = {key: font.getBestCmap() for key, font in fonts.items()}
     ubuntu_codes = {codepoint for codepoint in maps['Ubuntu'] if ubuntu_character(codepoint)}
-    regional_codes = set(maps[region]) - ubuntu_codes
-    fallback_codes = set(maps['SC']) - regional_codes - ubuntu_codes
-    assignments = [('Ubuntu', ubuntu_codes), (region, regional_codes)]
-    if fallback_codes:
-        assignments.append(('SC', fallback_codes))
-    upem = fonts[region]['head'].unitsPerEm
+    base_region = 'SC' if region == 'Merged' else region
+    priority = ['SC', 'TC', 'J'] if region == 'Merged' else list(dict.fromkeys([region, 'SC']))
+    assignments = [('Ubuntu', ubuntu_codes)]
+    expected = set(ubuntu_codes)
+    for source in priority:
+        codepoints = set(maps[source]) - expected
+        if codepoints:
+            assignments.append((source, codepoints))
+            expected.update(codepoints)
+    upem = fonts[base_region]['head'].unitsPerEm
     variant = '' if glow_weight == 'Regular' else ' MediumCJK'
-    family = f'Local Fusion {region}{variant}'
-    postscript = f'LocalFusion{region}{variant.replace(" ", "")}-Regular'
+    family = f'Glow Ubuntu {region}{variant}'
+    postscript = f'GlowUbuntu{region}{variant.replace(" ", "")}-Regular'
     with tempfile.TemporaryDirectory() as temporary:
         paths = []
         vertical_origins = []
@@ -113,7 +117,7 @@ def build(region, sources, output, glow_weight='Regular'):
         top.FullName = f'{family} Regular'
         top.Weight = 'Regular'
         for tag in ('hhea', 'OS/2'):
-            original = fonts[region][tag]
+            original = fonts[base_region][tag]
             target = merged[tag]
             fields = ('ascent', 'descent', 'lineGap') if tag == 'hhea' else (
                 'sTypoAscender', 'sTypoDescender', 'sTypoLineGap', 'usWinAscent', 'usWinDescent'
@@ -126,7 +130,6 @@ def build(region, sources, output, glow_weight='Regular'):
     with TTFont(destination) as result:
         result.ensureDecompiled()
         result_map = result.getBestCmap()
-        expected = ubuntu_codes | regional_codes | fallback_codes
         if set(result_map) != expected:
             raise RuntimeError(f'{region}: output character coverage differs from inputs')
         for source, codepoints in assignments:
@@ -150,14 +153,14 @@ def build(region, sources, output, glow_weight='Regular'):
 
 def main():
     parser = argparse.ArgumentParser(description='Build private Regular CFF OTF fonts with Ubuntu Latin glyphs.')
-    parser.add_argument('--region', nargs='+', choices=['SC', 'TC', 'J'], default=['SC', 'TC', 'J'])
+    parser.add_argument('--region', nargs='+', choices=['SC', 'TC', 'J', 'Merged'], default=['SC', 'TC', 'J', 'Merged'])
     parser.add_argument('--source-dir', type=Path, default=ROOT)
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'output')
     parser.add_argument('--glow-weight', choices=['Regular', 'Medium'], default='Regular')
     args = parser.parse_args()
     sources = {
         region: args.source_dir / f'GlowSans{region}-Normal-v0.93' / f'GlowSans{region}-Normal-{args.glow_weight}.otf'
-        for region in {'SC', *args.region}
+        for region in ({'SC', 'TC', 'J'} if 'Merged' in args.region else {'SC', *args.region})
     }
     sources['Ubuntu'] = args.source_dir / 'ubuntu-font-family-0.83' / 'Ubuntu-R.ttf'
     for path in sources.values():

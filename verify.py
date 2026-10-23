@@ -31,11 +31,13 @@ def bounds(font, codepoint):
 
 
 def verify(region, glow_weight='Regular'):
+    base_region = 'SC' if region == 'Merged' else region
+    priority = ['SC', 'TC', 'J'] if region == 'Merged' else list(dict.fromkeys([region, 'SC']))
     variant = '' if glow_weight == 'Regular' else 'MediumCJK'
-    destination = ROOT / 'output' / f'LocalFusion{region}{variant}-Regular.otf'
+    destination = ROOT / 'output' / f'GlowUbuntu{region}{variant}-Regular.otf'
     source_paths = {
         key: ROOT / f'GlowSans{key}-Normal-v0.93' / f'GlowSans{key}-Normal-{glow_weight}.otf'
-        for key in {'SC', region}
+        for key in priority
     }
     source_paths['Ubuntu'] = ROOT / 'ubuntu-font-family-0.83' / 'Ubuntu-R.ttf'
     sources = {key: TTFont(path) for key, path in source_paths.items()}
@@ -45,6 +47,14 @@ def verify(region, glow_weight='Regular'):
         assert result.sfntVersion == 'OTTO' and 'CFF ' in result
         assert len(result.getGlyphOrder()) < 65536
         assert result['OS/2'].usWeightClass == 400
+        family = f'Glow Ubuntu {region}' + (' MediumCJK' if variant else '')
+        assert result['name'].getDebugName(1) == family
+        assert result['name'].getDebugName(6) == destination.stem
+        assert result['CFF '].cff.fontNames == [destination.stem]
+        assert result['CFF '].cff[0].FamilyName == family
+        expected_codes = set().union(*(set(mapping) for key, mapping in maps.items() if key != 'Ubuntu'))
+        expected_codes.update(codepoint for codepoint in maps['Ubuntu'] if ubuntu_character(codepoint))
+        assert set(result.getBestCmap()) == expected_codes, (region, 'coverage')
         for text in ['AVATAR To Wa fi ffi', 'Cafe\u0301 A\u0308', '0123456789 - "Hello!"']:
             expected = shape(source_paths['Ubuntu'], text, upem)
             actual = shape(destination, text, upem)
@@ -54,11 +64,11 @@ def verify(region, glow_weight='Regular'):
         for direction in ['ltr', 'ttb']:
             text = '\u4e2d\u6587\u3001\u65e5\u672c\u8a9e\u3002\u201c\u201d'
             assert shape(destination, text, upem, direction) == shape(
-                source_paths[region], text, upem, direction
+                source_paths[base_region], text, upem, direction
             ), (region, direction, 'CJK shaping')
         for codepoint in result.getBestCmap():
             source = ('Ubuntu' if codepoint in maps['Ubuntu'] and ubuntu_character(codepoint)
-                      else region if codepoint in maps[region] else 'SC')
+                      else next(key for key in priority if codepoint in maps[key]))
             original_bounds = bounds(sources[source], codepoint)
             actual_bounds = bounds(result, codepoint)
             assert (actual_bounds is None) == (original_bounds is None), (region, codepoint)
@@ -77,5 +87,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--glow-weight', choices=['Regular', 'Medium'], default='Regular')
     args = parser.parse_args()
-    for region in ['SC', 'TC', 'J']:
+    for region in ['SC', 'TC', 'J', 'Merged']:
         verify(region, args.glow_weight)

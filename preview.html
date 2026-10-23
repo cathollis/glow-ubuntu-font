@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Local Fusion · 字体校样</title>
+  <title>Glow Ubuntu · 字体校样</title>
   <style>
-    @font-face { font-family: FusionSC; src: url('./output/LocalFusionSC-Regular.otf') format('opentype'); }
-    @font-face { font-family: FusionTC; src: url('./output/LocalFusionTC-Regular.otf') format('opentype'); }
-    @font-face { font-family: FusionJ; src: url('./output/LocalFusionJ-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuSC; src: url('./output/GlowUbuntuSC-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuTC; src: url('./output/GlowUbuntuTC-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuJ; src: url('./output/GlowUbuntuJ-Regular.otf') format('opentype'); }
     @font-face { font-family: GlowSC; src: url('./GlowSansSC-Normal-v0.93/GlowSansSC-Normal-Regular.otf') format('opentype'); }
     @font-face { font-family: GlowTC; src: url('./GlowSansTC-Normal-v0.93/GlowSansTC-Normal-Regular.otf') format('opentype'); }
     @font-face { font-family: GlowJ; src: url('./GlowSansJ-Normal-v0.93/GlowSansJ-Normal-Regular.otf') format('opentype'); }
     @font-face { font-family: Ubuntu; src: url('./ubuntu-font-family-0.83/Ubuntu-R.ttf') format('truetype'); }
-    @font-face { font-family: FusionSCMedium; src: url('./output/LocalFusionSCMediumCJK-Regular.otf') format('opentype'); }
-    @font-face { font-family: FusionTCMedium; src: url('./output/LocalFusionTCMediumCJK-Regular.otf') format('opentype'); }
-    @font-face { font-family: FusionJMedium; src: url('./output/LocalFusionJMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuMerged; src: url('./output/GlowUbuntuMerged-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuMergedMedium; src: url('./output/GlowUbuntuMergedMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuSCMedium; src: url('./output/GlowUbuntuSCMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuTCMedium; src: url('./output/GlowUbuntuTCMediumCJK-Regular.otf') format('opentype'); }
+    @font-face { font-family: GlowUbuntuJMedium; src: url('./output/GlowUbuntuJMediumCJK-Regular.otf') format('opentype'); }
     @font-face { font-family: GlowSCMedium; src: url('./GlowSansSC-Normal-v0.93/GlowSansSC-Normal-Medium.otf') format('opentype'); }
     @font-face { font-family: GlowTCMedium; src: url('./GlowSansTC-Normal-v0.93/GlowSansTC-Normal-Medium.otf') format('opentype'); }
     @font-face { font-family: GlowJMedium; src: url('./GlowSansJ-Normal-v0.93/GlowSansJ-Normal-Medium.otf') format('opentype'); }
@@ -73,13 +75,14 @@
   </style>
 </head>
 <body>
-  <header><div class="wrap masthead"><div><h1>Local Fusion <span lang="zh-CN">字体校样</span></h1><div class="sub">GLOW SANS NORMAL × UBUNTU / REGULAR</div></div><div class="badge">本地字体<br>PRIVATE BUILD</div></div></header>
+  <header><div class="wrap masthead"><div><h1>Glow Ubuntu <span lang="zh-CN">字体校样</span></h1><div class="sub">GLOW SANS NORMAL × UBUNTU / REGULAR</div></div><div class="badge">本地字体<br>PRIVATE BUILD</div></div></header>
   <main class="wrap">
     <div class="controls">
       <fieldset><legend>地区字形</legend><div class="segments">
         <label><input type="radio" name="region" value="SC" checked>简体 SC</label>
         <label><input type="radio" name="region" value="TC">繁体 TC</label>
         <label><input type="radio" name="region" value="J">日本 J</label>
+        <label><input type="radio" name="region" value="Merged">合并</label>
       </div></fieldset>
       <label class="setting"><span>Glow Sans 字重</span><select id="weight"><option value="Regular">Regular + Ubuntu Regular</option><option value="Medium" selected>Medium + Ubuntu Regular</option></select></label>
       <label class="setting"><span>字号 <output id="size-value">28 px</output></span><input id="size" type="range" min="12" max="80" value="28"></label>
@@ -89,14 +92,14 @@
     </div>
     <label class="edit-label" for="text">校样文字</label><textarea id="text" spellcheck="false"></textarea>
     <div class="comparison" id="comparison">
-      <section class="specimen"><div class="specimen-head"><h2 id="fusion-title">Local Fusion SC</h2><span class="status" id="fusion-status" role="status">加载中</span></div><p class="sample" id="fusion"></p></section>
+      <section class="specimen"><div class="specimen-head"><h2 id="merged-title">Glow Ubuntu SC</h2><span class="status" id="merged-status" role="status">加载中</span></div><p class="sample" id="merged"></p></section>
       <section class="specimen"><div class="specimen-head"><h2 id="glow-title">Glow Sans SC · 原版</h2><span class="status" id="glow-status" role="status">加载中</span></div><p class="sample" id="glow"></p></section>
     </div>
     <section class="latin"><div class="specimen-head"><h2>Ubuntu Regular · 原版拉丁文</h2><span class="status" id="ubuntu-status" role="status">加载中</span></div><p class="sample" style="font-family: Ubuntu, monospace" lang="en">ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz 0123456789
 AVATAR To Wa fi ffi — Café naïve Ångström
 "Hello, world!" 'Regular' - + = / : ; ( ) [ ] { }</p></section>
-    <footer><span>Regular 400 / CFF OpenType</span><span id="filename">output/LocalFusionSC-Regular.otf</span></footer>
+    <footer><span>Regular 400 / CFF OpenType</span><span id="filename">output/GlowUbuntuSC-Regular.otf</span></footer>
   </main>
   <script>
     const samples = {
@@ -108,7 +111,7 @@ AVATAR To Wa fi ffi — Café naïve Ångström
     const byId = id => document.getElementById(id);
     let generation = 0;
     function updateText() {
-      byId('fusion').textContent = byId('text').value;
+      byId('merged').textContent = byId('text').value;
       byId('glow').textContent = byId('text').value;
     }
     async function checkFont(family, statusId, token) {
@@ -132,17 +135,18 @@ AVATAR To Wa fi ffi — Café naïve Ångström
       const weight = byId('weight').value;
       const suffix = weight === 'Regular' ? '' : 'Medium';
       const variant = weight === 'Regular' ? '' : 'MediumCJK';
-      const language = { SC: 'zh-CN', TC: 'zh-TW', J: 'ja' }[region];
+      const language = { SC: 'zh-CN', TC: 'zh-TW', J: 'ja', Merged: 'zh-CN' }[region];
       generation += 1;
-      for (const [id, family] of [['fusion', 'Fusion'], ['glow', 'Glow']]) {
-        byId(id).style.fontFamily = `"${family}${region}${suffix}", sans-serif`;
+      for (const [id, family] of [['merged', 'GlowUbuntu'], ['glow', 'Glow']]) {
+        const fontRegion = id === 'glow' && region === 'Merged' ? 'SC' : region;
+        byId(id).style.fontFamily = `"${family}${fontRegion}${suffix}", sans-serif`;
         byId(id).lang = language;
-        checkFont(`${family}${region}${suffix}`, `${id}-status`, generation);
+        checkFont(`${family}${fontRegion}${suffix}`, `${id}-status`, generation);
       }
       checkFont('Ubuntu', 'ubuntu-status', generation);
-      byId('fusion-title').textContent = `Local Fusion ${region} · Glow ${weight}`;
-      byId('glow-title').textContent = `Glow Sans ${region} ${weight} · 原版`;
-      byId('filename').textContent = `output/LocalFusion${region}${variant}-Regular.otf`;
+      byId('merged-title').textContent = `Glow Ubuntu ${region} · Glow ${weight}`;
+      byId('glow-title').textContent = `Glow Sans ${region === 'Merged' ? 'SC' : region} ${weight} · 原版`;
+      byId('filename').textContent = `output/GlowUbuntu${region}${variant}-Regular.otf`;
     }
     document.querySelectorAll('[name=region]').forEach(input => input.addEventListener('change', updateRegion));
     byId('weight').addEventListener('change', updateRegion);
